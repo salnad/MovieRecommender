@@ -72,7 +72,17 @@ class SearchPage(webapp2.RequestHandler):
         # render and load the empty, search page
         self.response.write(search_template.render(search_data))
 
-
+class RecommendedPage(webapp2.RequestHandler):
+    def get(self):
+        id = '245891'
+        api_url = 'https://api.themoviedb.org/3/movie/' + id + '/recommendations?api_key=' + api_key + '&language=en-US&page=1'
+        loaded_json_data = urlfetch.fetch(api_url).content
+        # self.response.write(loaded_json_data)
+        loaded_response = json.loads(loaded_json_data)
+        loaded_movies = loaded_response['results']
+        # self.response.write(loaded_movies)
+        for movie in loaded_movies:
+            self.response.write(movie['title'] + '<br>')
 
     def post(self):
         # get the search term from the form upon submission
@@ -119,6 +129,7 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/login', LoginHandler),
     ('/data', DataPage),
+    ('/recommended', RecommendedPage),
      #this maps the root url to the MainPage Handler
     ('/search', SearchPage) #this maps the root url to the MainPage Handler
 ], debug=True)
