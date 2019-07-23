@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Movie Recommender</title>
+  </head>
+  <body>
+    <form method = 'post' action = 'search'>
+      <input type = "text" name = "search_title" value = "{{search_term}}">
+      &nbsp;
+      <input type = "submit" value = "Search">
+    </form>
+    <ul>
+      {% for movie in searched_movies %}
+        <li>{{ movie['Title'] }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
