@@ -4,6 +4,7 @@ import webapp2
 import jinja2
 from models import User
 import os, json
+from google.appengine.api import users
 from google.appengine.api import urlfetch
 
 jinja_env = jinja2.Environment(
@@ -21,16 +22,17 @@ class LoginHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             email_address = user.nickname()
-            logout_url = users.create_logout_url('/')
+            logout_url = users.create_logout_url('/login')
             logout_button= '<a href="%s"> Log out</a>' % logout_url
 
-            existing_user = User.query().filter(User. email == email_adress).get()
+            existing_user = User.query().filter(User.email == email_address).get()
             if existing_user:
-                self.response.write('Welcome Back ! ' + existing_user.first_name + "<br>" + logout_button)
+                self.response.write('Welcome Back, ' + existing_user.first_name + "<br>" + logout_button)
             else:
-                self.response.write('''Please register! "
-                    <form method='post' action='/'>
-                        Name: <input type='text' name='first name' + 'last name'>
+                self.response.write('''Please register!
+                    <form method='post' action='login'>
+                        First Name: <input type='text' name='first_name'>
+                        Last Name: <input type='text' name='last_name'>
                         <input type='submit'>
                     </form>
                     <br>
@@ -38,20 +40,20 @@ class LoginHandler(webapp2.RequestHandler):
                 ''' % logout_button)
 
         else:
-            login_url = users.create_login_url('/')
+            login_url = users.create_login_url('/login')
             login_button = '<a href="%s"> Sign In</a>' % login_url
             self.response.write("Please log into your account!<br>" + login_button)
-def post(self):
-    user = users.get_current_user()
-    if user:
-        cssi_user = CssiUser(
-            first_name=self.request.get('first_name'),
-            last_name=self.request.get('last_name'),
-            email_adress=user.nickname()
-        )
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            cssi_user = User(
+                first_name=self.request.get('first_name'),
+                last_name=self.request.get('last_name'),
+                email=user.nickname()
+            )
 
-        cssi_user.put()
-        self.response.write('Thank you for registering an account <a href="/">Home</a>')
+            cssi_user.put()
+            self.response.write('Thank you for registering an account <a href="/">Home</a>')
 
 class SearchPage(webapp2.RequestHandler):
     def get(self):
