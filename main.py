@@ -35,7 +35,7 @@ class SearchPage(webapp2.RequestHandler):
         # get the search term from the form upon submission
         search_term = self.request.get('search_title')
         # replace spaces with underscores (otherwise, API cannot parse)
-        search_term = search_title.replace(' ', '_')
+        search_term = search_term.replace(' ', '_')
         # generate a api_url based upon that search term
         api_url = "http://www.omdbapi.com/?apikey=ecca4fde&page=1&s=" + search_term
         # get the json result for search using urlfetch api call
@@ -53,12 +53,29 @@ class SearchPage(webapp2.RequestHandler):
 
         # data to be put onto webpage 'search_term' (term user searched), and 'searched_movies' (movies returned from that term)
         search_data = {
-            "search_term" : search_title,
+            "search_term" : search_term,
             "searched_movies" : loaded_movies
         }
         # load search_template using jinja, and rendering it onto the webpage
         search_template = jinja_env.get_template('templates/search.html')
         self.response.write(search_template.render(search_data))
+
+class DataPage(webapp2.RequestHandler):
+    def post(self):
+        movie_title = self.request.get('Title: ')
+        movie_plot = self.request.get('Plot: ')
+        movie_director = self.request.get('Director: ')
+
+        #create movie object
+        movie_info = Movie(
+            title = movie_title,
+            plot = movie_plot,
+            director = movie_director
+        )
+        #store it in data store
+        movie_info.put()
+
+
 
 #the app configuration section
 app = webapp2.WSGIApplication([
