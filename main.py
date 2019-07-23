@@ -15,6 +15,25 @@ jinja_env = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+def recommend_movies(movie_id):
+    api_url = 'https://api.themoviedb.org/3/movie/' + movie_id + '/recommendations?api_key=' + api_key + '&language=en-US&page=1'
+    loaded_json_data = urlfetch.fetch(api_url).content
+    loaded_response = json.loads(loaded_json_data)
+    loaded_movies = loaded_response['results']
+    return loaded_movies
+
+def search_movies(search_term):
+    search_term = search_term.replace(' ', '+')
+    # generate a api_url based upon that search term
+    api_url = "https://api.themoviedb.org/3/search/movie?api_key=" + api_key + "&query=" + search_term
+    # get the json result for search using urlfetch api call
+    loaded_json_data = urlfetch.fetch(api_url).content
+    loaded_response = json.loads(loaded_json_data)
+    # empty loaded_movies array (initialize it)
+    loaded_movies = loaded_response['results']
+    return loaded_movies
+
+
 #the handler section
 class MainPage(webapp2.RequestHandler):
     def get(self): #for a GET request
@@ -72,30 +91,11 @@ class SearchPage(webapp2.RequestHandler):
         # render and load the empty, search page
         self.response.write(search_template.render(search_data))
 
-class RecommendedPage(webapp2.RequestHandler):
-    def get(self):
-        id = '245891'
-        api_url = 'https://api.themoviedb.org/3/movie/' + id + '/recommendations?api_key=' + api_key + '&language=en-US&page=1'
-        loaded_json_data = urlfetch.fetch(api_url).content
-        # self.response.write(loaded_json_data)
-        loaded_response = json.loads(loaded_json_data)
-        loaded_movies = loaded_response['results']
-        # self.response.write(loaded_movies)
-        for movie in loaded_movies:
-            self.response.write(movie['title'] + '<br>')
-
     def post(self):
         # get the search term from the form upon submission
         search_term = self.request.get('search_title')
         # replace spaces with underscores (otherwise, API cannot parse)
-        search_term = search_term.replace(' ', '+')
-        # generate a api_url based upon that search term
-        api_url = "https://api.themoviedb.org/3/search/movie?api_key=" + api_key + "&query=" + search_term
-        # get the json result for search using urlfetch api call
-        loaded_json_data = urlfetch.fetch(api_url).content
-        loaded_response = json.loads(loaded_json_data)
-        # empty loaded_movies array (initialize it)
-        loaded_movies = loaded_response['results']
+        loaded_movies = search_movies(search_term)
 
         # data to be put onto webpage 'search_term' (term user searched), and 'searched_movies' (movies returned from that term)
 
@@ -106,6 +106,38 @@ class RecommendedPage(webapp2.RequestHandler):
         # load search_template using jinja, and rendering it onto the webpage
         search_template = jinja_env.get_template('templates/search.html')
         self.response.write(search_template.render(search_data))
+
+
+class RecommendedPage(webapp2.RequestHandler):
+    def get(self):
+        search_term = "John Wick..."
+        # data to pass into search template, 'default text' and empty results array because user has not yet searched
+        search_data = {
+            "search_term" : search_term,
+            "searched_movies" : []
+        }
+        # load jinja template using 'search.html' (gives a search bar to search, and puts all results in a unordered list)
+        search_template = jinja_env.get_template('templates/recommended.html')
+        # render and load the empty, search page
+        self.response.write(search_template.render(search_data))
+
+
+    def post(self):
+        # get the search term from the form upon submission
+        search_term = self.request.get('search_term')
+        loaded_movies = search_movies(search_term)
+        if len(loaded_movies) > 0:
+            seed_movie = loaded_movies[0]
+            seed_movie_id = seed_movie['id']
+        self.response.write(seed_movie_id)
+        recommended_movies = recommend_movies(str(seed_movie_id))
+        recommended_data = {
+            "search_term" : search_term,
+            "recommended_movies" : recommended_movies
+        }
+        # load search_template using jinja, and rendering it onto the webpage
+        recommended_template = jinja_env.get_template('templates/recommended.html')
+        self.response.write(recommended_template.render(recommended_data))
 
 class DataPage(webapp2.RequestHandler):
     def get(self):
