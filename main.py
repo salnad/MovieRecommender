@@ -3,9 +3,12 @@
 import webapp2
 import jinja2
 from models import User
+from models import Movie
 import os, json
 from google.appengine.api import users
 from google.appengine.api import urlfetch
+
+api_key = "3f44093c7132e8d90dfece35961ffafa"
 
 jinja_env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -75,23 +78,17 @@ class SearchPage(webapp2.RequestHandler):
         # get the search term from the form upon submission
         search_term = self.request.get('search_title')
         # replace spaces with underscores (otherwise, API cannot parse)
-        search_term = search_term.replace(' ', '_')
+        search_term = search_term.replace(' ', '+')
         # generate a api_url based upon that search term
-        api_url = "http://www.omdbapi.com/?apikey=ecca4fde&page=1&s=" + search_term
+        api_url = "https://api.themoviedb.org/3/search/movie?api_key=" + api_key + "&query=" + search_term
         # get the json result for search using urlfetch api call
         loaded_json_data = urlfetch.fetch(api_url).content
+        loaded_response = json.loads(loaded_json_data)
         # empty loaded_movies array (initialize it)
-        loaded_movies = []
-        # check if the loaded data is in the form of a dictionary
-        if loaded_json_data[0] == '{':
-            # convert json data into a dictionary
-            loaded_response = json.loads(loaded_json_data)
-            # check if the search resulted has properly been processed
-            if loaded_response['Response'] != 'False':
-                # set the results (list of movies) for the search terms as loaded_movies
-                loaded_movies = loaded_response['Search']
+        loaded_movies = loaded_response['results']
 
         # data to be put onto webpage 'search_term' (term user searched), and 'searched_movies' (movies returned from that term)
+
         search_data = {
             "search_term" : search_term,
             "searched_movies" : loaded_movies
@@ -101,7 +98,7 @@ class SearchPage(webapp2.RequestHandler):
         self.response.write(search_template.render(search_data))
 
 class DataPage(webapp2.RequestHandler):
-    def post(self):
+    def get(self):
         movie_title = self.request.get('Title: ')
         movie_plot = self.request.get('Plot: ')
         movie_director = self.request.get('Director: ')
@@ -121,6 +118,7 @@ class DataPage(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/login', LoginHandler),
+    ('/data', DataPage),
      #this maps the root url to the MainPage Handler
     ('/search', SearchPage) #this maps the root url to the MainPage Handler
 ], debug=True)
