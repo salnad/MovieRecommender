@@ -2,13 +2,9 @@
 #the import section
 import webapp2
 import jinja2
-<<<<<<< HEAD
-import os
 from models import User
-=======
 import os, json
 from google.appengine.api import urlfetch
->>>>>>> e510714c7836c7b0c63a70837e8068bc5743c36b
 
 jinja_env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
