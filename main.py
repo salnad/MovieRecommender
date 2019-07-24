@@ -19,30 +19,46 @@ class MainPage(webapp2.RequestHandler):
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
-        user = users.get_current_user()
-        if user:
-            email_address = user.nickname()
-            logout_url = users.create_logout_url('/login')
-            logout_button= '<a href="%s"> Log out</a>' % logout_url
-
-            existing_user = User.query().filter(User.email == email_address).get()
-            if existing_user:
-                self.response.write('Welcome Back, ' + existing_user.first_name + "<br>" + logout_button)
-            else:
-                self.response.write('''Please register!
-                    <form method='post' action='login'>
-                        First Name: <input type='text' name='first_name'>
-                        Last Name: <input type='text' name='last_name'>
-                        <input type='submit'>
-                    </form>
-                    <br>
-                    %s
-                ''' % logout_button)
-
+        existing_user = User.query().filter(User.email == email_address).get()
+        if existing_user:
+            self.redirect('/')
         else:
-            login_url = users.create_login_url('/login')
-            login_button = '<a href="%s"> Sign In</a>' % login_url
-            self.response.write("Please log into your account!<br>" + login_button)
+            register_template =jinja_env.get_template('templates/register.html')
+            self.response.write(register_template.render)
+
+
+
+        # user = users.get_current_user()
+        # if user:
+        #     email_address = user.nickname()
+        #     logout_url = users.create_logout_url('/login')
+        #     logout_button= '<a href="%s"> Log out</a>' % logout_url
+
+# user = onelogin.User()
+# new_user = {
+#     'first_name':
+#     'last_name':
+#     'email':
+# }
+#
+            # existing_user = User.query().filter(User.email == email_address).get()
+            # if existing_user:
+            #     self.response.write('Welcome Back, ' + existing_user.first_name + "<br>" + logout_button)
+            # else:
+            #     self.response.write('''Please register!
+            #         <form method='post' action='login'>
+            #             First Name: <input type='text' name='first_name'>
+            #             Last Name: <input type='text' name='last_name'>
+            #             <input type='submit'>
+            #         </form>
+            #         <br>
+            #         %s
+            #     ''' % logout_button)
+
+        # else:
+        #     login_url = users.create_login_url('/login')
+        #     login_button = '<a href="%s"> Sign In</a>' % login_url
+        #     self.response.write("Please log into your account!<br>" + login_button)
     def post(self):
         user = users.get_current_user()
         if user:
@@ -53,7 +69,7 @@ class LoginHandler(webapp2.RequestHandler):
             )
 
             cssi_user.put()
-            self.response.write('Thank you for registering an account <a href="/">Home</a>')
+            self.redirect('/')
 
 class SearchPage(webapp2.RequestHandler):
     def get(self):
@@ -115,12 +131,13 @@ class DataPage(webapp2.RequestHandler):
         #store it in data store
         movie_info.put()
 
-
-
 #the app configuration section
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/login', LoginHandler),
      #this maps the root url to the MainPage Handler
-    ('/search', SearchPage) #this maps the root url to the MainPage Handler
+    ('/search', SearchPage),
+     #this maps the root url to the MainPage Handler
+     ('/register', RegisterPage),
+     ('/loginhere', LoginHerePage)
 ], debug=True)
