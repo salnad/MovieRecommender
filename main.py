@@ -1,12 +1,9 @@
 #main.py
-#the import section
-import webapp2
-import jinja2
-from models import User
-from models import Movie
-import os, json
-from google.appengine.api import users
-from google.appengine.api import urlfetch
+#the import section 
+from models import User, Movie
+import os, json, webapp2, jinja2
+from google.appengine.api import users, urlfetch
+
 
 api_key = "3f44093c7132e8d90dfece35961ffafa"
 
