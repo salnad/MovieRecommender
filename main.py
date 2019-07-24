@@ -1,5 +1,5 @@
 #main.py
-#the import section 
+#the import section
 from models import User, Movie
 import os, json, webapp2, jinja2
 from google.appengine.api import users, urlfetch
@@ -38,62 +38,46 @@ def search_movies(search_term):
 
 #the handler section
 class MainPage(webapp2.RequestHandler):
+
     def get(self): #for a GET request
-        self.response.write('Hello, World!') # the responseclass LoginHandler(webapp2.RequestHandler):
+        user = users.get_current_user()
+        registered_user = None
+        # print(user.nickname())
+        if not user:
+            button_url = users.create_login_url('/login')
+            is_logged_in = False
+        else:
+            button_url = users.create_logout_url('/')
+            registered_user = User.query().filter(User.email == user.nickname()).get()
+            is_logged_in = True
+        main_data = {
+            "is_logged_in" : is_logged_in,
+            "button_url": button_url,
+            "user" : registered_user
+        }
+
+        main_template = jinja_env.get_template('templates/main.html')
+        self.response.write(main_template.render(main_data))
 
 class LoginHandler(webapp2.RequestHandler):
+
     def get(self):
-        existing_user = User.query().filter(User.email == email_address).get()
+        user = users.get_current_user()
+        existing_user = User.query().filter(User.email == user.nickname()).get()
         if existing_user:
             self.redirect('/')
         else:
             register_template =jinja_env.get_template('templates/register.html')
-            self.response.write(register_template.render)
+            self.response.write(register_template.render())
 
-
-
-        # user = users.get_current_user()
-        # if user:
-        #     email_address = user.nickname()
-        #     logout_url = users.create_logout_url('/login')
-        #     logout_button= '<a href="%s"> Log out</a>' % logout_url
-
-# user = onelogin.User()
-# new_user = {
-#     'first_name':
-#     'last_name':
-#     'email':
-# }
-#
-            # existing_user = User.query().filter(User.email == email_address).get()
-            # if existing_user:
-            #     self.response.write('Welcome Back, ' + existing_user.first_name + "<br>" + logout_button)
-            # else:
-            #     self.response.write('''Please register!
-            #         <form method='post' action='login'>
-            #             First Name: <input type='text' name='first_name'>
-            #             Last Name: <input type='text' name='last_name'>
-            #             <input type='submit'>
-            #         </form>
-            #         <br>
-            #         %s
-            #     ''' % logout_button)
-
-        # else:
-        #     login_url = users.create_login_url('/login')
-        #     login_button = '<a href="%s"> Sign In</a>' % login_url
-        #     self.response.write("Please log into your account!<br>" + login_button)
     def post(self):
-        user = users.get_current_user()
-        if user:
-            cssi_user = User(
-                first_name=self.request.get('first_name'),
-                last_name=self.request.get('last_name'),
-                email=user.nickname()
-            )
-
-            cssi_user.put()
-            self.redirect('/')
+        new_user = User(
+            first_name=self.request.get('first_name'),
+            last_name=self.request.get('last_name'),
+            email = users.get_current_user().nickname()
+        )
+        new_user.put()
+        self.redirect('/')
 
 class SearchPage(webapp2.RequestHandler):
     def get(self):
@@ -187,9 +171,5 @@ app = webapp2.WSGIApplication([
     ('/login', LoginHandler),
     ('/data', DataPage),
     ('/recommended', RecommendedPage),
-     #this maps the root url to the MainPage Handler
     ('/search', SearchPage),
-     #this maps the root url to the MainPage Handler
-     ('/register', RegisterPage),
-     ('/loginhere', LoginHerePage)
 ], debug=True)
