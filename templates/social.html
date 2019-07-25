@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <ul>
+      {% for movie in favorite_movies %}
+        <li>{{movie['title']}}</li>
+      {% endfor %}
+    </ul>
+    <form method = "post" action = "user">
+      <input type="submit"  value = "compare">
+    </form>
+  </body>
+</html>
