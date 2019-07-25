@@ -49,7 +49,6 @@ def streaming_sites(search_term):
 
 #the handler section
 class MainPage(webapp2.RequestHandler):
-
     def get(self): #for a GET request
         user = users.get_current_user()
         registered_user = None
@@ -104,7 +103,6 @@ class SearchPage(webapp2.RequestHandler):
         # render and load the empty, search page
         self.response.write(search_template.render(search_data))
 
-
     def post(self):
         # get the search term from the form upon submission
         search_term = self.request.get('search_title')
@@ -116,14 +114,9 @@ class SearchPage(webapp2.RequestHandler):
             "search_term" : search_term,
             "searched_movies" : loaded_movies
         }
-
-        # ===================== Put stuff on the screen =======================
-
         # load search_template using jinja, and rendering it onto the webpage
         search_template = jinja_env.get_template('templates/search.html')
         self.response.write(search_template.render(search_data))
-
-        # ====================================================================
 
 
 class RecommendedPage(webapp2.RequestHandler):
@@ -163,14 +156,6 @@ class RecommendedPage(webapp2.RequestHandler):
             "recommended_movies" : recommended_movies
         }
 
-        #take search results and search term
-        #store results and terms in database
-
-        #display recommendations
-        #take liked results and add them to the database
-        #show more recommendations
-        #repeat until stopped
-
         # load search_template using jinja, and rendering it onto the webpage
         recommended_template = jinja_env.get_template('templates/recommended.html')
         self.response.write(recommended_template.render(recommended_data))
@@ -190,7 +175,6 @@ class DataPage(webapp2.RequestHandler):
         #store it in data store
         movie_info.put()
 
-<<<<<<< HEAD
 class UserPage(webapp2.RequestHandler):
     def get(self):
         # 'default text' of the search bar
@@ -225,19 +209,12 @@ class UserPage(webapp2.RequestHandler):
         streaming_template = jinja_env.get_template('templates/user.html')
         self.response.write(streaming_template.render(streamer_data))
 
-=======
->>>>>>> b514f2fd7ccb80965e10539cd00f6ffe4ec166a8
 #the app configuration section
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/login', LoginHandler),
     ('/data', DataPage),
     ('/recommended', RecommendedPage),
-<<<<<<< HEAD
-    # ('/user', UserPage),
-     #this maps the root url to the MainPage Handler
-    ('/search', SearchPage) #this maps the root url to the MainPage Handler
-=======
+    ('/user', UserPage),
     ('/search', SearchPage),
->>>>>>> b514f2fd7ccb80965e10539cd00f6ffe4ec166a8
 ], debug=True)
