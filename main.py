@@ -1,5 +1,5 @@
 #main.py
-#the import section 
+#the import section
 from models import User, Movie
 import os, json, webapp2, jinja2
 from google.appengine.api import users, urlfetch
@@ -35,6 +35,17 @@ def search_movies(search_term):
     # return results
     return loaded_movies
 
+def streaming_sites(search_term):
+    utelly_json_data = unirest.get("https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=bojack&country=us".content,
+    headers={
+        "X-RapidAPI-Host": "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
+        "X-RapidAPI-Key": "f64badbe6amshfc501a81d7aec7bp184a75jsn6abbf636ff40"
+      }
+    )
+    loaded_response = json.loads(utelly_json_data)
+    loaded_streaming_sites = loaded_response['results']
+
+    return loaded_streaming_sites
 
 #the handler section
 class MainPage(webapp2.RequestHandler):
@@ -93,6 +104,7 @@ class SearchPage(webapp2.RequestHandler):
         # render and load the empty, search page
         self.response.write(search_template.render(search_data))
 
+
     def post(self):
         # get the search term from the form upon submission
         search_term = self.request.get('search_title')
@@ -104,9 +116,14 @@ class SearchPage(webapp2.RequestHandler):
             "search_term" : search_term,
             "searched_movies" : loaded_movies
         }
+
+        # ===================== Put stuff on the screen =======================
+
         # load search_template using jinja, and rendering it onto the webpage
         search_template = jinja_env.get_template('templates/search.html')
         self.response.write(search_template.render(search_data))
+
+        # ====================================================================
 
 
 class RecommendedPage(webapp2.RequestHandler):
@@ -146,6 +163,14 @@ class RecommendedPage(webapp2.RequestHandler):
             "recommended_movies" : recommended_movies
         }
 
+        #take search results and search term
+        #store results and terms in database
+
+        #display recommendations
+        #take liked results and add them to the database
+        #show more recommendations
+        #repeat until stopped
+
         # load search_template using jinja, and rendering it onto the webpage
         recommended_template = jinja_env.get_template('templates/recommended.html')
         self.response.write(recommended_template.render(recommended_data))
@@ -165,7 +190,39 @@ class DataPage(webapp2.RequestHandler):
         #store it in data store
         movie_info.put()
 
+class UserPage(webapp2.RequestHandler):
+    def get(self):
+        # 'default text' of the search bar
+        search_term = "Netflix..."
+        # data to pass into search bar, 'default text' and empty results array because user has not yet searched
+        streaming_site_data = {
+            "streaming_source" : streaming_source,
+            "streaming_sites" : []
+        }
+        # load jinja template using 'user.html' (gives a search bar to search, and puts all results in a unordered list)
+        streaming_template = jinja_env.get_template('templates/user.html')
+        # render and load the empty, search page
+        self.response.write(streaming_template.render(streamer_data))
 
+    def post(self):
+        # get the search term from the form upon submission
+        search_term = self.request.get('search_term')
+
+        loaded_sites =  streaming_sites(search_term)
+        # use search_movies to search using the API, and store it in loaded_movies
+        loaded_streaming_sites = []
+
+        # data to be put onto webpage 'search_term' (term user searched), and 'searched_movies' (movies returned from that term)
+        streamer_data = {
+            "streaming_source" : streaming_source,
+            "streaming_sites" : loaded_sites
+        }
+
+        # ===================== Put stuff on the screen =======================
+
+        # load search_template using jinja, and rendering it onto the webpage
+        streaming_template = jinja_env.get_template('templates/user.html')
+        self.response.write(streaming_template.render(streamer_data))
 
 #the app configuration section
 app = webapp2.WSGIApplication([
@@ -173,6 +230,7 @@ app = webapp2.WSGIApplication([
     ('/login', LoginHandler),
     ('/data', DataPage),
     ('/recommended', RecommendedPage),
+    # ('/user', UserPage),
      #this maps the root url to the MainPage Handler
     ('/search', SearchPage) #this maps the root url to the MainPage Handler
 ], debug=True)
