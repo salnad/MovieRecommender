@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Movie Recommender</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body>
+    <form method = 'post' action = 'recommended' class = "search">
+      <input name = "form_name" type = "hidden" value = 'SEARCHFORM'/>
+      <input type = "text" name = "search_term" value = "{{search_term}}">
+      &nbsp;
+      <input type = "submit" value = "Search">
+    </form>
+    <form method = 'post' action = 'recommended'>
+      <input name = "form_name" type = "hidden" value = 'REFINEFORM'/>
+      <ul>
+        {% for movie in recommended_movies %}
+          {% if movie %}
+            <div class = "result">
+              <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
+              <div class = "result_inner">
+                <h1>{{ movie.title }}</h1>
+                <p>{{ movie.overview }}</p>
+              </div>
+              <input type = "checkbox" name = "mov{{loop.index}}" value = "{{movie.id}}"></li>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <div class = "search">
+        <input type = "submit" name = "refine" value = "Refine">
+        <input type = "submit" name = "submit" value = "Submit">
+      </div>
+    </form>
+  </body>
+</html>

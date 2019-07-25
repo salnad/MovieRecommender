@@ -3,17 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>Movie Recommender</title>
+    <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
-    <form method = 'post' action = 'search'>
-      <input type = "text" name = "search_title" value = "{{search_term}}">
-      &nbsp;
-      <input type = "submit" value = "Search">
-    </form>
-    <ul>
-      {% for movie in searched_movies %}
-        <li>{{ movie['title'] }}</li>
-      {% endfor %}
-    </ul>
+
+    <div class = "search">
+      <form method = 'post' action = 'search'>
+        <input type = "text" name = "search_title" value = "{{search_term}}">
+        &nbsp;
+        <input type = "submit" value = "Search">
+      </form>
+    </div>
+
+    {% for movie in searched_movies %}
+      <div class = "result">
+        <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
+        <div class = "result_inner">
+          <h1>{{ movie.title }}</h1>
+          <p>{{ movie.overview }}</p>
+        </div>
+      </div>
+    {% endfor %}
   </body>
 </html>
