@@ -4,10 +4,29 @@ body {
   font-family: 'Rubik', sans-serif;
 }
 
+.search_button {
+  height: 40px;
+  padding: 10px 10px;
+  margin-left: 10px;
+  border-radius: 30px;
+  background-color: black;
+}
+
 .search {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 5% 0%;
+}
+
+.search_bar {
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  height: 50px;
+  width: 500px;
+  font-size: 20px;
 }
 
 .result img {

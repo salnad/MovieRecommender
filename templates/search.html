@@ -7,13 +7,13 @@
   </head>
   <body>
 
-    <div class = "search">
-      <form method = 'post' action = 'search'>
-        <input type = "text" name = "search_title" value = "{{search_term}}">
+    <form method = 'post' action = 'search'>
+      <div class = "search">
+        <input placeholder = "John Wick..." class = "search_bar" type = "text" name = "search_title" value = "{{search_term}}">
         &nbsp;
-        <input type = "submit" value = "Search">
-      </form>
-    </div>
+        <input class = "search_button" type = "image" src = "http://www.myiconfinder.com/uploads/iconsets/256-256-6cc6135dbcdd8f769c00fcc7440dd898-popcorn.png" value = "Search">
+        </div>
+    </form>
 
     {% for movie in searched_movies %}
       <div class = "result">

@@ -128,7 +128,7 @@ class LoginHandler(webapp2.RequestHandler):
 class SearchPage(webapp2.RequestHandler):
     def get(self):
         # 'default text' of the search bar
-        search_term = "John Wick..."
+        search_term = ""
         # data to pass into search bar, 'default text' and empty results array because user has not yet searched
         search_data = {
             "search_term" : search_term,
@@ -158,7 +158,7 @@ class RecommendedPage(webapp2.RequestHandler):
     def get(self):
         global current_recommendations
 
-        search_term = "John Wick..."
+        search_term = ""
 
         # data to pass into search bar, 'default text' and empty results array because user has not yet searched
         search_data = {

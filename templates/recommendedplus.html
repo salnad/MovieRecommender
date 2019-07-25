@@ -6,12 +6,15 @@
     <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
-    <form method = 'post' action = 'recommended' class = "search">
-      <input name = "form_name" type = "hidden" value = 'SEARCHFORM'/>
-      <input type = "text" name = "search_term" value = "{{search_term}}">
-      &nbsp;
-      <input type = "submit" value = "Search">
+    <form method = 'post' action = 'search'>
+      <div class = "search">
+        <input name = "form_name" type = "hidden" value = 'SEARCHFORM'/>
+        <input placeholder = "John Wick..." class = "search_bar" type = "text" name = "search_term" value = "{{search_term}}">
+        &nbsp;
+        <input class = "search_button" type = "image" src = "http://www.myiconfinder.com/uploads/iconsets/256-256-6cc6135dbcdd8f769c00fcc7440dd898-popcorn.png" value = "Search">
+        </div>
     </form>
+
     <form method = 'post' action = 'recommended'>
       <input name = "form_name" type = "hidden" value = 'REFINEFORM'/>
       <ul>

@@ -2,15 +2,20 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Movie Recommender</title>
+    <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
-    <ul>
       {% for movie in favorite_movies %}
-        <li>{{movie['title']}}</li>
+        <div class = "result">
+          <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
+          <div class = "result_inner">
+            <h1>{{ movie.title }}</h1>
+            <p>{{ movie.overview }}</p>
+          </div>
+        </div>
       {% endfor %}
-    </ul>
-    <form method = "post" action = "user">
+    <form method = "post" action = "social">
       <input type="submit"  value = "compare">
     </form>
   </body>
