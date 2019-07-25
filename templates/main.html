@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    {% if is_logged_in %}
+      <p>Welcome, {{user.first_name}}</p>
+      <a href = "{{button_url}}">Log Out</a>
+    {% else %}
+    <p>Welcome, Please Log In</p>
+    <a href = "{{button_url}}">Log In</a>
+    {% endif %}
+  </body>
+</html>

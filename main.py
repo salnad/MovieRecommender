@@ -49,46 +49,46 @@ def streaming_sites(search_term):
 
 #the handler section
 class MainPage(webapp2.RequestHandler):
+
     def get(self): #for a GET request
-        self.response.write('Hello, World!') # the responseclass LoginHandler(webapp2.RequestHandler):
+        user = users.get_current_user()
+        registered_user = None
+        # print(user.nickname())
+        if not user:
+            button_url = users.create_login_url('/login')
+            is_logged_in = False
+        else:
+            button_url = users.create_logout_url('/')
+            registered_user = User.query().filter(User.email == user.nickname()).get()
+            is_logged_in = True
+        main_data = {
+            "is_logged_in" : is_logged_in,
+            "button_url": button_url,
+            "user" : registered_user
+        }
+
+        main_template = jinja_env.get_template('templates/main.html')
+        self.response.write(main_template.render(main_data))
 
 class LoginHandler(webapp2.RequestHandler):
+
     def get(self):
         user = users.get_current_user()
-        if user:
-            email_address = user.nickname()
-            logout_url = users.create_logout_url('/login')
-            logout_button= '<a href="%s"> Log out</a>' % logout_url
-
-            existing_user = User.query().filter(User.email == email_address).get()
-            if existing_user:
-                self.response.write('Welcome Back, ' + existing_user.first_name + "<br>" + logout_button)
-            else:
-                self.response.write('''Please register!
-                    <form method='post' action='login'>
-                        First Name: <input type='text' name='first_name'>
-                        Last Name: <input type='text' name='last_name'>
-                        <input type='submit'>
-                    </form>
-                    <br>
-                    %s
-                ''' % logout_button)
-
+        existing_user = User.query().filter(User.email == user.nickname()).get()
+        if existing_user:
+            self.redirect('/')
         else:
-            login_url = users.create_login_url('/login')
-            login_button = '<a href="%s"> Sign In</a>' % login_url
-            self.response.write("Please log into your account!<br>" + login_button)
-    def post(self):
-        user = users.get_current_user()
-        if user:
-            cssi_user = User(
-                first_name=self.request.get('first_name'),
-                last_name=self.request.get('last_name'),
-                email=user.nickname()
-            )
+            register_template =jinja_env.get_template('templates/register.html')
+            self.response.write(register_template.render())
 
-            cssi_user.put()
-            self.response.write('Thank you for registering an account <a href="/">Home</a>')
+    def post(self):
+        new_user = User(
+            first_name=self.request.get('first_name'),
+            last_name=self.request.get('last_name'),
+            email = users.get_current_user().nickname()
+        )
+        new_user.put()
+        self.redirect('/')
 
 class SearchPage(webapp2.RequestHandler):
     def get(self):
@@ -190,6 +190,7 @@ class DataPage(webapp2.RequestHandler):
         #store it in data store
         movie_info.put()
 
+<<<<<<< HEAD
 class UserPage(webapp2.RequestHandler):
     def get(self):
         # 'default text' of the search bar
@@ -224,13 +225,19 @@ class UserPage(webapp2.RequestHandler):
         streaming_template = jinja_env.get_template('templates/user.html')
         self.response.write(streaming_template.render(streamer_data))
 
+=======
+>>>>>>> b514f2fd7ccb80965e10539cd00f6ffe4ec166a8
 #the app configuration section
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/login', LoginHandler),
     ('/data', DataPage),
     ('/recommended', RecommendedPage),
+<<<<<<< HEAD
     # ('/user', UserPage),
      #this maps the root url to the MainPage Handler
     ('/search', SearchPage) #this maps the root url to the MainPage Handler
+=======
+    ('/search', SearchPage),
+>>>>>>> b514f2fd7ccb80965e10539cd00f6ffe4ec166a8
 ], debug=True)
