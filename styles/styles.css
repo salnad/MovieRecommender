@@ -6,6 +6,39 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+.register_form {
+  display: flex;
+  justify-content: center;
+  margin: 2% 0%;
+}
+
+.header h1 {
+  font-size: 20px;
+  color: white;
+}
+
+.header_inner img {
+  height: 20px;
+}
+
+.header_inner {
+  height: 20px;
+  padding: 2% 2%;
+  margin-left: 5%;
+  border-radius: 30px;
+  background-color: white;
+}
+
+.header {
+  width: auto;
+  margin: 2% 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  border-radius: 50px;
+}
+
 .search_button {
   height: 40px;
   padding: 10px 10px;
