@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title>Movie Recommender</title>
-    <link rel="stylesheet" type="text/css" href="styles/styles.css"/>
-  </head>
+      <meta charset="utf-8">
+      <title>Welcome to The Movie Market!</title>
+      <link rel="stylesheet" type="text/css" href="styles/styles.css"/>
+    </head>
   <body>
     {% if is_logged_in %}
-      <p>Welcome, {{user.first_name}}</p>
-      <a href = "{{button_url}}">Log Out</a>
+        <p>Welcome, {{user.first_name}}</p>
+        <a href = "{{button_url}}">Log Out</a>
     {% else %}
-    <p>Welcome, Please Log In</p>
-    <a href = "{{button_url}}">Log In</a>
+    {% if is_not_logged_in}
+        <p>As consumers in today’s functioning society, we are always in control of what we see daily. With new streaming services and subscriptions such as Netflix, HULU, and HBO Now the television and motion picture options are endless. That’s why we have created, The Movie Market.
+         The sole purpose of the Movie Market is to help consumers make decisions about what they want to watch. With our features of creating a recommended movie search for any user that makes an account, allowing users to search for movies using a filtered search tool, and connecting users with the same movie interests finding a movie on Friday Nights to watch with your family just became easier!
+         Create a Movie Market account today!</p>
+         <p>Welcome, Please Log In</p>
+      <a href = "{{button_url}}">Log In</a>
     {% endif %}
   </body>
 </html>

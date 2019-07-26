@@ -149,8 +149,8 @@ class SearchPage(webapp2.RequestHandler):
         if current_form == "SUBMITFORM":
             for i in range(10):
                 currel = self.request.get('mov' + str(i+1))
-                print(currel)
-                if currel != '':
+                # print(currel)
+                if currel != '' and int(currel) not in current_user.favorite_movies:
                     current_user.favorite_movies += [int(currel)]
             current_user.put()
             self.redirect('/')
@@ -206,7 +206,7 @@ class RecommendedPage(webapp2.RequestHandler):
             if len(loaded_movies) > 0:
                 # get the most 'relevant movie' to the search
                 seed_movie = loaded_movies[0]
-                print(seed_movie)
+                # print(seed_movie)
                 # get the id of the 'most relevant movie' for the seed of the recommendation
                 seed_movie_id = seed_movie['id']
                 # set recommended_movies to recommend movies based on the seed movie's id
@@ -219,7 +219,7 @@ class RecommendedPage(webapp2.RequestHandler):
             if submit_button:
                 for i in range(10):
                     currel = self.request.get('mov' + str(i+1))
-                    if currel != '':
+                    if currel != '' and int(currel) not in current_user.favorite_movies:
                         current_user.favorite_movies += [int(currel)]
                 current_user.put()
                 self.redirect('/')
@@ -245,9 +245,9 @@ class SocialPage(webapp2.RequestHandler):
         current_user = User.query(ancestor=PARENT_KEY_FOR_USER).filter(User.email == user_email).get()
         favorite_movies = current_user.favorite_movies
         favorite_movies = map(get_movie_from_id, favorite_movies)
-        print(favorite_movies)
+        # print(favorite_movies)
         user_data = {
-            "favorite_movies" : favorite_movies
+            "favorite_movies" : favorite_movies,
         }
         user_template = jinja_env.get_template('templates/social.html')
         self.response.write(user_template.render(user_data))
@@ -255,12 +255,39 @@ class SocialPage(webapp2.RequestHandler):
     def post(self):
         user_email = users.get_current_user().nickname()
         current_user = User.query(ancestor=PARENT_KEY_FOR_USER).filter(User.email == user_email).get()
-        all_users = User.query().fetch()
-        list = []
-        for user in all_users:
-            list.append((user, compare_movie_list(user.favorite_movies, current_user.favorite_movies)))
-        list = sorted(list, key = lambda x: x[1], reverse = True)[1:]
-        self.response.write(list)
+
+        current_form = self.request.get('form_name')
+        favorite_movies = []
+        other_user_first_name = ""
+        other_user_favorite_movies = []
+        if current_form == "SUBMITFORM":
+            for i in range(10):
+                currel = self.request.get('mov' + str(i+1))
+                print(currel)
+                if currel != '' and int(currel) not in current_user.favorite_movies:
+                    current_user.favorite_movies += [int(currel)]
+            current_user.put()
+        else:
+            all_users = User.query().fetch()
+            list = []
+            for user in all_users:
+                list.append((user, compare_movie_list(user.favorite_movies, current_user.favorite_movies)))
+            if len(list) > 1:
+                list = sorted(list, key = lambda x: x[1], reverse = True)[1:]
+            other_user = list[1][0]
+            other_user_first_name = other_user.first_name
+            other_user_favorite_movies = map(get_movie_from_id, other_user.favorite_movies)
+
+        favorite_movies = current_user.favorite_movies
+        favorite_movies = map(get_movie_from_id, favorite_movies)
+
+        user_template = jinja_env.get_template('templates/social.html')
+        user_data = {
+            "favorite_movies" : favorite_movies,
+            "other_user_first_name" : other_user_first_name,
+            "other_user_favorite_movies" : other_user_favorite_movies
+        }
+        self.response.write(user_template.render(user_data))
 
 class DataPage(webapp2.RequestHandler):
     def get(self):
