@@ -6,6 +6,12 @@
       <link rel="stylesheet" type="text/css" href="styles/styles.css"/>
     </head>
   <body>
+    <div class="topnav">
+      <a class="active" href="/">Home</a>
+      <a href="/recommended">Recommended</a>
+      <a href="/social">Social</a>
+      <a href="/search">Search</a>
+    </div>
     {% if is_logged_in %}
         <p>Welcome, {{user.first_name}}</p>
         <a href = "{{button_url}}">Log Out</a>

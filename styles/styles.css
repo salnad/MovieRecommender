@@ -121,7 +121,6 @@ body {
   align-items: baseline;
 }
 
-
 .topnav {
   background-color: #333;
   overflow: hidden;
@@ -149,6 +148,7 @@ body {
 .topnav a:hover {
   background-color: red;
   color: white;
+}
 
 .favorites img {
   height: auto;
