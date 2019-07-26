@@ -36,8 +36,9 @@ def search_movies(search_term):
     loaded_json_data = urlfetch.fetch(api_url).content
     loaded_response = json.loads(loaded_json_data)
     # set list of movie to 'results' field
-    loaded_movies = loaded_response['results']
-    # return results
+    loaded_movies = []
+    if 'results' in loaded_response.keys():
+        loaded_movies = loaded_response['results']
     return loaded_movies
 
 def get_movie_from_id(movie_id):
@@ -141,9 +142,25 @@ class SearchPage(webapp2.RequestHandler):
 
     def post(self):
         # get the search term from the form upon submission
-        search_term = self.request.get('search_title')
-        # use search_movies to search using the API, and store it in loaded_movies
+        user_email = users.get_current_user().nickname()
+        current_user = User.query(ancestor=PARENT_KEY_FOR_USER).filter(User.email == user_email).get()
+
+        current_form = self.request.get('form_name')
+        if current_form == "SUBMITFORM":
+            for i in range(10):
+                currel = self.request.get('mov' + str(i+1))
+                print(currel)
+                if currel != '':
+                    current_user.favorite_movies += [int(currel)]
+            current_user.put()
+            self.redirect('/')
+            return
+
+        search_term = self.request.get('search_term')
         loaded_movies = search_movies(search_term)
+        # use search_movies to search using the API, and store it in loaded_movies
+        if len(loaded_movies) > 10:
+            loaded_movies = loaded_movies[0:10]
 
         # data to be put onto webpage 'search_term' (term user searched), and 'searched_movies' (movies returned from that term)
         search_data = {
@@ -228,6 +245,7 @@ class SocialPage(webapp2.RequestHandler):
         current_user = User.query(ancestor=PARENT_KEY_FOR_USER).filter(User.email == user_email).get()
         favorite_movies = current_user.favorite_movies
         favorite_movies = map(get_movie_from_id, favorite_movies)
+        print(favorite_movies)
         user_data = {
             "favorite_movies" : favorite_movies
         }

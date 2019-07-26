@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 
 body {
-  font-family: 'Rubik', sans-serif;
+  /* font-family: 'Rubik', sans-serif; */
+  font-family: 'Poppins', sans-serif;
 }
 
 .search_button {
@@ -9,6 +11,26 @@ body {
   padding: 10px 10px;
   margin-left: 10px;
   border-radius: 30px;
+  background-color: black;
+}
+
+.submit_button {
+  color: white;
+  font-weight: bold;
+  height: 40px;
+  padding: 10px 10px;
+  margin: 0px 10px;
+  border-radius: 30px;
+  background-color: black;
+}
+
+.refine_button {
+  color: white;
+  font-weight: bold;
+  height: 40px;
+  padding: 10px 10px;
+  margin: 0px 10px;
+  border-radius: 50px;
   background-color: black;
 }
 
