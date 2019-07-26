@@ -6,17 +6,43 @@
     <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
-      {% for movie in favorite_movies %}
-        <div class = "result">
-          <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
-          <div class = "result_inner">
-            <h1>{{ movie.title }}</h1>
-            <p>{{ movie.overview }}</p>
+    <div class = "social_page">
+      <div class = "social_column">
+        <h1>User Favorites</h1>
+        {% for movie in favorite_movies %}
+          <div class = "favorites">
+            <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
+            <div class = "favorites_inner">
+              <h2>{{ movie.title }}</h2>
+              <!-- <p>{{ movie.overview }}</p> -->
+            </div>
           </div>
-        </div>
-      {% endfor %}
-    <form method = "post" action = "social">
-      <input type="submit"  value = "compare">
-    </form>
+        {% endfor %}
+      </div>
+      <div class="social_column">
+        <h1>Hey, check these other's out</h1>
+        <form method = "post" action = "social">
+          <input type="submit"  value = "compare">
+        </form>
+        <form method = "post" action = "social">
+          <input name = "form_name" type = "hidden" value = 'SUBMITFORM'/>
+          <h1>{{other_user_first_name}}</h1>
+          {% for movie in other_user_favorite_movies %}
+            <div class = "result">
+              <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
+              <div class = "result_inner">
+                <h1>{{ movie.title }}</h1>
+                <p>{{ movie.overview }}</p>
+              </div>
+              <input type = "checkbox" name = "mov{{loop.index}}" value = "{{movie.id}}">
+            </div>
+          {% endfor %}
+          <input type="submit"  value = "submit">
+        </form>
+      </div>
+    </div>
+
+
+
   </body>
 </html>
