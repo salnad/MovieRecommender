@@ -8,21 +8,30 @@
   <body>
 
     <form method = 'post' action = 'search'>
+      <input name = "form_name" type = "hidden" value = 'SEARCHFORM'/>
       <div class = "search">
-        <input placeholder = "John Wick..." class = "search_bar" type = "text" name = "search_title" value = "{{search_term}}">
+        <input placeholder = "John Wick..." class = "search_bar" type = "text" name = "search_term" value = "{{search_term}}">
         &nbsp;
         <input class = "search_button" type = "image" src = "http://www.myiconfinder.com/uploads/iconsets/256-256-6cc6135dbcdd8f769c00fcc7440dd898-popcorn.png" value = "Search">
         </div>
     </form>
 
-    {% for movie in searched_movies %}
-      <div class = "result">
-        <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
-        <div class = "result_inner">
-          <h1>{{ movie.title }}</h1>
-          <p>{{ movie.overview }}</p>
+      <form method = 'post' action = 'search'>
+        {% for movie in searched_movies %}
+          <div class = "result">
+            <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
+            <div class = "result_inner">
+              <h1>{{ movie.title }}</h1>
+              <p>{{ movie.overview }}</p>
+            </div>
+            <input type = "checkbox" name = "mov{{loop.index}}" value = "{{movie.id}}"></li>
+          </div>
+        {% endfor %}
+        <input name = "form_name" type = "hidden" value = 'SUBMITFORM'/>
+        <div class = "search">
+          <input class = "submit_button" type = "submit" name = "submit" value = "Submit">
         </div>
-      </div>
-    {% endfor %}
+      </form>
+
   </body>
 </html>

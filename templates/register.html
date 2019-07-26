@@ -1,15 +1,28 @@
 <html>
-  <head>
-    <meta charset="utf-8">
-    <body>
-      <h1>Register Here!</h1>
-  <!-- <button type="button" onclick="alert('Register!')">Register!</button> -->
-      <link rel="stylesheet" "type="text/css" href="style.css"/>
-      <form method="post" action="/login">
-      <br>
-      <input type="text" name="first_name"/>
-      <input type="text" name="last_name"/>
-      <input type="submit"/>
-    </body>
-  </head>
+<head>
+  <title>You Need To Register A Account!</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+  <div class = "header">
+    <h1>Register</h1>
+    <div class="header_inner">
+      <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-6cc6135dbcdd8f769c00fcc7440dd898-popcorn.png" alt="">
+    </div>
+  </div>
+  <br>
+  <form method="post" action="/login">
+    <div style = "margin-top: 0%" class = "register_form">
+      <input placeholder = "First Name..." class = "search_bar" type="text" name="first_name" />
+    </div>
+    <div class = "register_form">
+      <input placeholder = "Second Name..." class = "search_bar" type="text" name="last_name" />
+    </div>
+    <div class = "register_form">
+      <input class = "submit_button" type="submit" />
+    </div>
+  </form>
+  <br>
+</body>
 </html>

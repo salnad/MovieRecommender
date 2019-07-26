@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
-    <form method = 'post' action = 'search'>
+    <form method = 'post' action = 'recommended'>
       <div class = "search">
         <input name = "form_name" type = "hidden" value = 'SEARCHFORM'/>
         <input placeholder = "John Wick..." class = "search_bar" type = "text" name = "search_term" value = "{{search_term}}">
@@ -32,8 +32,8 @@
         {% endfor %}
       </ul>
       <div class = "search">
-        <input type = "submit" name = "refine" value = "Refine">
-        <input type = "submit" name = "submit" value = "Submit">
+        <input class = "refine_button" type = "submit" name = "refine" value = "Refine">
+        <input class = "submit_button" type = "submit" name = "submit" value = "Submit">
       </div>
     </form>
   </body>
