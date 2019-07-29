@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="/">Home</a>
+      <a class="active" href="/">Movie Market</a>
       <a href="/recommended">Recommended</a>
       <a href="/social">Social</a>
       <a href="/search">Search</a>
@@ -28,7 +28,7 @@
       <div class="social_column">
         <h1>Hey, check these other's out</h1>
         <form method = "post" action = "social">
-          <input type="submit"  value = "compare">
+          <input class="submit_button" type="submit"  value = "compare">
         </form>
         <form method = "post" action = "social">
           <input name = "form_name" type = "hidden" value = 'SUBMITFORM'/>
@@ -43,7 +43,7 @@
               <input type = "checkbox" name = "mov{{loop.index}}" value = "{{movie.id}}">
             </div>
           {% endfor %}
-          <input type="submit"  value = "submit">
+          <input class="submit_button" type="submit"  value = "submit">
         </form>
       </div>
     </div>

@@ -6,13 +6,16 @@
       <link rel="stylesheet" type="text/css" href="styles/styles.css"/>
     </head>
   <body>
+    {% if is_logged_in %}
     <div class="topnav">
-      <a class="active" href="/">Home</a>
+      <a class="active" href="/">Movie Market</a>
       <a href="/recommended">Recommended</a>
       <a href="/social">Social</a>
       <a href="/search">Search</a>
     </div>
-    {% if is_logged_in %}
+    <div class="web_title">
+      <h1 style="font-size:80px">Movie Market</h1>
+    </div>
     <div class = "main_page">
         <h1>Welcome, {{user.first_name}}</h1>
     </div>
@@ -25,6 +28,9 @@
       </div>
     </div>
     {% else %}
+        <div class="web_title">
+          <h1 style="font-size:80px">Movie Market</h1>
+        </div>
         <p>As consumers in today’s functioning society, we are always in control of what we see daily. With new streaming services and subscriptions such as Netflix, HULU, and HBO Now the television and motion picture options are endless. That’s why we have created, The Movie Market.
          The sole purpose of the Movie Market is to help consumers make decisions about what they want to watch. With our features of creating a recommended movie search for any user that makes an account, allowing users to search for movies using a filtered search tool, and connecting users with the same movie interests finding a movie on Friday Nights to watch with your family just became easier!
          Create a Movie Market account today!</p>
