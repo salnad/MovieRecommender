@@ -4,6 +4,21 @@
 body {
   /* font-family: 'Rubik', sans-serif; */
   font-family: 'Poppins', sans-serif;
+  background-color: black;
+  color: white;
+}
+
+p {
+  color: white;
+}
+
+.result_inner {
+  color: white;
+}
+
+.web_title h1 {
+  text-align: center;
+  color: white;
 }
 
 .social_page {
@@ -80,6 +95,16 @@ body {
   background-color: black;
 }
 
+.submit_button {
+  color: white;
+  font-weight: bold;
+  height: 40px;
+  padding: 10px 10px;
+  margin: 0px 10px;
+  border-radius: 50px;
+  background-color: black;
+}
+
 .search {
   display: flex;
   justify-content: center;
@@ -139,12 +164,12 @@ body {
 /* Change the color of links on hover */
 .topnav a:hover {
   background-color: #ddd;
-  color: black;
+  color: grey;
 }
 
 /* Add a color to the active/current link */
 .topnav a:hover {
-  background-color: red;
+  background-color: #ff0000;
   color: white;
 }
 

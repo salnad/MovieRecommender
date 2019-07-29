@@ -268,15 +268,18 @@ class SocialPage(webapp2.RequestHandler):
                     current_user.favorite_movies += [int(currel)]
             current_user.put()
         else:
+            other_user_favorite_movies = []
+            other_user_first_name = ""
             all_users = User.query().fetch()
             list = []
-            for user in all_users:
-                list.append((user, compare_movie_list(user.favorite_movies, current_user.favorite_movies)))
-            if len(list) > 1:
-                list = sorted(list, key = lambda x: x[1], reverse = True)[1:]
-            other_user = list[1][0]
-            other_user_first_name = other_user.first_name
-            other_user_favorite_movies = map(get_movie_from_id, other_user.favorite_movies)
+            if len(all_users) > 1:
+                for user in all_users:
+                    list.append((user, compare_movie_list(user.favorite_movies, current_user.favorite_movies)))
+                if len(list) > 1:
+                    list = sorted(list, key = lambda x: x[1], reverse = True)[1:]
+                other_user = list[1][0]
+                other_user_first_name = other_user.first_name
+                other_user_favorite_movies = map(get_movie_from_id, other_user.favorite_movies)
 
         favorite_movies = current_user.favorite_movies
         favorite_movies = map(get_movie_from_id, favorite_movies)
