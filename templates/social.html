@@ -14,7 +14,7 @@
     </div>
     <div class = "social_page">
       <div class = "social_column">
-        <h1>User Favorites</h1>
+        <h1 style = "text-align: center">User Favorites</h1>
         {% for movie in favorite_movies %}
           <div class = "favorites">
             <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
@@ -26,13 +26,13 @@
         {% endfor %}
       </div>
       <div class="social_column">
-        <h1>Hey, check these other's out</h1>
+        <h1 style = "text-align: center">Hey, check other's lists out</h1>
         <form method = "post" action = "social">
-          <input class="submit_button" type="submit"  value = "compare">
+          <input style = "margin-left: 45%" class="submit_button" type="submit"  value = "compare">
         </form>
         <form method = "post" action = "social">
           <input name = "form_name" type = "hidden" value = 'SUBMITFORM'/>
-          <h1>{{other_user_first_name}}</h1>
+          <h1 style = "text-align: center">{{other_user_first_name}}</h1>
           {% for movie in other_user_favorite_movies %}
             <div class = "result">
               <img src = "https://image.tmdb.org/t/p/w500/{{movie.poster_path}}">
@@ -43,7 +43,7 @@
               <input type = "checkbox" name = "mov{{loop.index}}" value = "{{movie.id}}">
             </div>
           {% endfor %}
-          <input class="submit_button" type="submit"  value = "submit">
+          <input style = "margin-left: 46%" class="refine_button" type="submit"  value = "submit">
         </form>
       </div>
     </div>

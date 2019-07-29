@@ -13,9 +13,10 @@
       <a href="/social">Social</a>
       <a href="/search">Search</a>
     </div>
-    
-    <div class="web_title">
+
+    <div class="web_title" style = "display: flex; align-items: center; justify-content: center;">
       <h1 style="font-size:80px">Movie Market</h1>
+      <img class = "main_popcorn" src = "http://www.myiconfinder.com/uploads/iconsets/256-256-6cc6135dbcdd8f769c00fcc7440dd898-popcorn.png">
     </div>
     <div class = "main_page">
         <h1>Welcome, {{user.first_name}}</h1>
@@ -25,18 +26,23 @@
     </div>
     <div class = "main_page">
       <div class = "submit_button">
-        <a href = "{{button_url}}">Log Out</a>
+        <a class = "refine_button" style = "border-width: 2px; text-decoration: none; border-style: solid; align-self: center;" href = "{{button_url}}">Log Out</a>
       </div>
     </div>
     {% else %}
-        <div class="web_title">
+        <div class="web_title" style = "display: flex; align-items: center; justify-content: center;">
           <h1 style="font-size:80px">Movie Market</h1>
+          <img class = "main_popcorn" src = "http://www.myiconfinder.com/uploads/iconsets/256-256-6cc6135dbcdd8f769c00fcc7440dd898-popcorn.png">
         </div>
-        <p>As consumers in today’s functioning society, we are always in control of what we see daily. With new streaming services and subscriptions such as Netflix, HULU, and HBO Now the television and motion picture options are endless. That’s why we have created, The Movie Market.
+        <p style = "text-align: justify; margin: 1% 10%">As consumers in today’s functioning society, we are always in control of what we see daily. With new streaming services and subscriptions such as Netflix, HULU, and HBO Now the television and motion picture options are endless. That’s why we have created, The Movie Market.
          The sole purpose of the Movie Market is to help consumers make decisions about what they want to watch. With our features of creating a recommended movie search for any user that makes an account, allowing users to search for movies using a filtered search tool, and connecting users with the same movie interests finding a movie on Friday Nights to watch with your family just became easier!
          Create a Movie Market account today!</p>
-         <p>Welcome, Please Log In</p>
-      <a href = "{{button_url}}">Log In</a>
+         <div class = "search">
+           <p style = "text-align: center; padding: 0% 0%; margin: 0% 10%">Welcome, Please Log In</p>
+          </div>
+          <div class = "search" style = "padding: 0% 0%;">
+            <a class = "refine_button" style = "border-width: 2px; text-decoration: none; border-style: solid; align-self: center; padding-bottom: 0%;" href = "{{button_url}}">Log In</a>
+          </div>
     {% endif %}
   </body>
 </html>

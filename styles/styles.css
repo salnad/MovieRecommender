@@ -69,6 +69,14 @@ p {
   border-radius: 50px;
 }
 
+.main_popcorn {
+  height: 70px;
+  padding: 20px 20px;
+  /* margin-left: 10px; */
+  border-radius: 40px;
+  background-color: black;
+}
+
 .search_button {
   height: 30px;
   padding: 20px 20px;
